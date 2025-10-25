@@ -1,0 +1,13 @@
+<div class="board">
+  <div *ngFor="let row of rows" class="row">
+    <div *ngFor="let square of row" 
+         class="square" 
+         [class.light]="square.light" 
+         [class.dark]="!square.light" 
+         [class.selected]="selectedSquare?.name === square.name"
+         (click)="onSquareClick(square)">
+      <span class="piece">{{ square.piece }}</span>
+      <span class="name">{{ square.name }}</span>
+    </div>
+  </div>
+</div>
