@@ -1,16 +1,32 @@
-<div class="board">
-  <div *ngFor="let row of rows" class="row">
-    <div *ngFor="let square of row"
-         class="square"
-         [class.light]="square.light"
-         [class.dark]="!square.light"
-         [class.selected]="selectedSquare?.name === square.name"
-         (click)="onSquareClick(square)">
-      <img *ngIf="getPieceImage(square)"
-           [src]="getPieceImage(square)"
-           [alt]="square.piece || ''"
-           class="piece">
-      <span class="name">{{ square.name }}</span>
+<div class="board-container">
+  <div class="board" [class.game-over]="gameOver">
+    <div *ngFor="let row of rows" class="row">
+      <div *ngFor="let square of row"
+           class="square"
+           [class.light]="square.light"
+           [class.dark]="!square.light"
+           [class.selected]="selectedSquare?.name === square.name"
+           (click)="onSquareClick(square)">
+        <img *ngIf="getPieceImage(square)"
+             [src]="getPieceImage(square)"
+             [alt]="square.piece || ''"
+             class="piece">
+        <span class="name">{{ square.name }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="gameOver" class="game-over-overlay">
+    <div class="game-over-message">
+      <h2 *ngIf="isCheckmate">Checkmate!</h2>
+      <h2 *ngIf="isStalemate">Stalemate!</h2>
+      <h2 *ngIf="isDraw && !isStalemate">Draw!</h2>
+      
+      <p *ngIf="isCheckmate" class="winner">{{ winner }} wins!</p>
+      <p *ngIf="isStalemate">The game is a draw by stalemate</p>
+      <p *ngIf="isDraw && !isStalemate">The game is a draw</p>
+      
+      <button class="new-game-btn" (click)="resetGame()">New Game</button>
     </div>
   </div>
 </div>
