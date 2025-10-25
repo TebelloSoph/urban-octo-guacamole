@@ -84,6 +84,17 @@
               "src/styles.scss"
             ]
           }
+        },
+        "e2e": {
+          "builder": "playwright-ng-schematics:playwright",
+          "options": {
+            "devServerTarget": "chessly:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "chessly:serve:production"
+            }
+          }
         }
       }
     }
