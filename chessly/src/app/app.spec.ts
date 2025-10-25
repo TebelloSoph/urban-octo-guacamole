@@ -1,25 +1,29 @@
 import { provideZonelessChangeDetection } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { createComponentFactory, Spectator } from '@ngneat/spectator';
 import { App } from './app';
 
 describe('App', () => {
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [App],
-      providers: [provideZonelessChangeDetection()]
-    }).compileComponents();
+  let spectator: Spectator<App>;
+  const createComponent = createComponentFactory({
+    component: App,
+    providers: [provideZonelessChangeDetection()]
+  });
+
+  beforeEach(() => {
+    spectator = createComponent();
   });
 
   it('should create the app', () => {
-    const fixture = TestBed.createComponent(App);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
+    expect(spectator.component).toBeTruthy();
   });
 
   it('should render title', () => {
-    const fixture = TestBed.createComponent(App);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, chessly');
+    const h1 = spectator.query('h1');
+    expect(h1?.textContent).toContain('chessly');
+  });
+
+  it('should render the board component', () => {
+    const boardComponent = spectator.query('app-board');
+    expect(boardComponent).toBeTruthy();
   });
 });
