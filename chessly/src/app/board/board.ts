@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Chess, Square } from 'chess.js';
+import confetti from 'canvas-confetti';
 
 interface SquareData {
   name: string;
@@ -85,12 +86,27 @@ export class BoardComponent {
       this.isCheckmate = true;
       // The player who just moved wins, so the current turn (who can't move) lost
       this.winner = this.chess.turn() === 'w' ? 'Black' : 'White';
+      this.throwConfetti();
     } else if (this.chess.isStalemate()) {
       this.gameOver = true;
       this.isStalemate = true;
     } else if (this.chess.isDraw()) {
       this.gameOver = true;
       this.isDraw = true;
+    }
+  }
+
+  throwConfetti() {
+    const canvas = document.getElementById('confetti-canvas') as HTMLCanvasElement;
+    if (canvas) {
+      const myConfetti = confetti.create(canvas, {
+        resize: true,
+        useWorker: true
+      });
+      myConfetti({
+        particleCount: 100,
+        spread: 160
+      });
     }
   }
 
