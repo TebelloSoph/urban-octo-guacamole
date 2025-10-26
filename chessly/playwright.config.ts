@@ -67,4 +67,11 @@ export default defineConfig({
     //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
     // },
   ],
+
+  /* Run your local dev server before starting the tests */
+  webServer: {
+    command: 'npx http-server dist/chessly -p 4200',
+    url: 'http://localhost:4200',
+    reuseExistingServer: !process.env.CI,
+  },
 });
