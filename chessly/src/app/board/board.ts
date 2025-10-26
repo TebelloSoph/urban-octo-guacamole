@@ -98,16 +98,42 @@ export class BoardComponent {
 
   throwConfetti() {
     const canvas = document.getElementById('confetti-canvas') as HTMLCanvasElement;
-    if (canvas) {
-      const myConfetti = confetti.create(canvas, {
-        resize: true,
-        useWorker: true
-      });
+    if (!canvas) return;
+    
+    const myConfetti = confetti.create(canvas, {
+      resize: true,
+      useWorker: true
+    });
+
+    // Fire confetti multiple times from different positions
+    const duration = 3000;
+    const animationEnd = Date.now() + duration;
+    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+    const interval = setInterval(() => {
+      const timeLeft = animationEnd - Date.now();
+
+      if (timeLeft <= 0) {
+        clearInterval(interval);
+        return;
+      }
+
+      const particleCount = 50 * (timeLeft / duration);
+
+      // Fire from left side
       myConfetti({
-        particleCount: 100,
-        spread: 160
+        ...defaults,
+        particleCount,
+        origin: { x: 0, y: Math.random() - 0.2 }
       });
-    }
+      
+      // Fire from right side
+      myConfetti({
+        ...defaults,
+        particleCount,
+        origin: { x: 1, y: Math.random() - 0.2 }
+      });
+    }, 250);
   }
 
   resetGame() {
